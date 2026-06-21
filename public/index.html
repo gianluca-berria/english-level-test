@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>English Level Test</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Nivelamento de proficiencia</p>
+          <h1>English Level Test</h1>
+        </div>
+        <a class="export-link" href="/api/resultados/exportar/csv">Exportar CSV</a>
+      </section>
+
+      <section id="start-view" class="panel">
+        <h2>Identificacao do aluno</h2>
+        <form id="student-form" class="form-grid">
+          <label>
+            <span>Nome completo</span>
+            <input id="name-input" name="nome" type="text" autocomplete="name" required minlength="3">
+          </label>
+          <label>
+            <span>CPF</span>
+            <input id="cpf-input" name="cpf" type="text" inputmode="numeric" autocomplete="off" maxlength="11" required>
+          </label>
+          <button type="submit">Iniciar ou consultar resultado</button>
+        </form>
+      </section>
+
+      <section id="test-view" class="panel hidden">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Teste em andamento</p>
+            <h2>Responda todas as perguntas</h2>
+          </div>
+          <p id="question-count" class="muted"></p>
+        </div>
+        <form id="test-form">
+          <div id="questions-container" class="questions"></div>
+          <button type="submit">Finalizar teste</button>
+        </form>
+      </section>
+
+      <section id="result-view" class="panel hidden">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Resultado</p>
+            <h2 id="result-level"></h2>
+          </div>
+          <button id="new-search-button" type="button" class="secondary">Consultar outro CPF</button>
+        </div>
+        <div id="result-summary" class="summary-grid"></div>
+        <div>
+          <h3>Desempenho por categoria</h3>
+          <div id="category-performance" class="category-list"></div>
+        </div>
+      </section>
+
+      <p id="message" class="message" role="status"></p>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

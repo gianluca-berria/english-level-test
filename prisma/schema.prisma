@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Aluno {
+  id         Int         @id @default(autoincrement())
+  nome       String
+  cpf        String      @unique
+  createdAt  DateTime    @default(now())
+  resultados Resultado[]
+}
+
+model Categoria {
+  id        Int        @id @default(autoincrement())
+  nome      String     @unique
+  perguntas Pergunta[]
+}
+
+model Pergunta {
+  id           Int           @id @default(autoincrement())
+  texto        String
+  categoriaId  Int
+  ativa        Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  categoria    Categoria     @relation(fields: [categoriaId], references: [id])
+  alternativas Alternativa[]
+  respostas    Resposta[]
+}
+
+model Alternativa {
+  id         Int        @id @default(autoincrement())
+  texto      String
+  correta    Boolean    @default(false)
+  perguntaId Int
+  pergunta   Pergunta   @relation(fields: [perguntaId], references: [id])
+  respostas  Resposta[]
+}
+
+model Resultado {
+  id                     Int        @id @default(autoincrement())
+  alunoId                Int
+  cpf                    String     @unique
+  dataRealizacao         DateTime   @default(now())
+  acertos                Int
+  totalQuestoes          Int
+  percentualGeral        Float
+  nivel                  String
+  desempenhoPorCategoria Json
+  aluno                  Aluno      @relation(fields: [alunoId], references: [id])
+  respostas              Resposta[]
+}
+
+model Resposta {
+  id                       Int         @id @default(autoincrement())
+  resultadoId              Int
+  perguntaId               Int
+  alternativaId            Int
+  correta                  Boolean
+  categoriaNomeSnapshot    String
+  perguntaTextoSnapshot    String
+  alternativaTextoSnapshot String
+  resultado                Resultado   @relation(fields: [resultadoId], references: [id])
+  pergunta                 Pergunta    @relation(fields: [perguntaId], references: [id])
+  alternativa              Alternativa @relation(fields: [alternativaId], references: [id])
+}
