@@ -10,7 +10,8 @@ const data = [
       { texto: 'Cooking', correta: false },
       { texto: 'Healthcare', correta: true },
       { texto: 'Construction', correta: false },
-      { texto: 'Music', correta: false }
+      { texto: 'Music', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -20,7 +21,8 @@ const data = [
       { texto: 'He was sick', correta: false },
       { texto: 'He woke up late', correta: true },
       { texto: 'The bus was early', correta: false },
-      { texto: 'He forgot his bag', correta: false }
+      { texto: 'He forgot his bag', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -30,7 +32,8 @@ const data = [
       { texto: 'Closed', correta: false },
       { texto: 'Expensive', correta: false },
       { texto: 'With no available seats', correta: true },
-      { texto: 'Very quiet', correta: false }
+      { texto: 'Very quiet', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -40,7 +43,8 @@ const data = [
       { texto: 'Maria was preparing seriously', correta: true },
       { texto: 'Maria hated studying', correta: false },
       { texto: 'Maria missed the exam', correta: false },
-      { texto: 'Maria was teaching the class', correta: false }
+      { texto: 'Maria was teaching the class', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -50,7 +54,8 @@ const data = [
       { texto: 'It started raining', correta: true },
       { texto: 'It became sunny', correta: false },
       { texto: 'People went swimming', correta: false },
-      { texto: 'The weather became hot', correta: false }
+      { texto: 'The weather became hot', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -60,7 +65,8 @@ const data = [
       { texto: 'By taxi', correta: false },
       { texto: 'By bus', correta: false },
       { texto: 'On foot', correta: true },
-      { texto: 'By train', correta: false }
+      { texto: 'By train', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -70,7 +76,8 @@ const data = [
       { texto: 'To play football', correta: false },
       { texto: 'To complete her online course', correta: true },
       { texto: 'To cook dinner', correta: false },
-      { texto: 'To repair a car', correta: false }
+      { texto: 'To repair a car', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -80,7 +87,8 @@ const data = [
       { texto: 'It was canceled forever', correta: false },
       { texto: 'It was moved to Friday', correta: true },
       { texto: 'It happened yesterday', correta: false },
-      { texto: 'It started earlier', correta: false }
+      { texto: 'It started earlier', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -90,7 +98,8 @@ const data = [
       { texto: 'Nobody liked the movie', correta: false },
       { texto: 'The movie was short', correta: false },
       { texto: 'People enjoyed the movie', correta: true },
-      { texto: 'The movie was canceled', correta: false }
+      { texto: 'The movie was canceled', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -100,7 +109,8 @@ const data = [
       { texto: 'The instructions were difficult', correta: true },
       { texto: 'He lost his phone', correta: false },
       { texto: 'He was hungry', correta: false },
-      { texto: 'The task was finished', correta: false }
+      { texto: 'The task was finished', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -110,7 +120,8 @@ const data = [
       { texto: 'Very often', correta: false },
       { texto: 'Never', correta: false },
       { texto: 'Not often', correta: true },
-      { texto: 'Every day', correta: false }
+      { texto: 'Every day', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -120,7 +131,8 @@ const data = [
       { texto: 'At 7:40', correta: true },
       { texto: 'At 8:20', correta: false },
       { texto: 'At 8:00', correta: false },
-      { texto: 'At 9:00', correta: false }
+      { texto: 'At 9:00', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -130,7 +142,8 @@ const data = [
       { texto: 'They gave up immediately', correta: false },
       { texto: 'They succeeded after trying many times', correta: true },
       { texto: 'They never found a solution', correta: false },
-      { texto: 'They ignored the problem', correta: false }
+      { texto: 'They ignored the problem', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -140,7 +153,8 @@ const data = [
       { texto: 'Only positive opinions', correta: false },
       { texto: 'Only negative opinions', correta: false },
       { texto: 'Both positive and negative opinions', correta: true },
-      { texto: 'No opinions at all', correta: false }
+      { texto: 'No opinions at all', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -150,7 +164,8 @@ const data = [
       { texto: 'Clara was late', correta: false },
       { texto: 'There was no traffic', correta: false },
       { texto: 'Clara arrived at the correct time', correta: true },
-      { texto: 'Clara missed the appointment', correta: false }
+      { texto: 'Clara missed the appointment', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
 
@@ -161,7 +176,8 @@ const data = [
       { texto: 'Large', correta: true },
       { texto: 'Tiny', correta: false },
       { texto: 'Cold', correta: false },
-      { texto: 'Fast', correta: false }
+      { texto: 'Fast', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -171,7 +187,8 @@ const data = [
       { texto: 'Small', correta: false },
       { texto: 'Expensive', correta: true },
       { texto: 'Clean', correta: false },
-      { texto: 'Easy', correta: false }
+      { texto: 'Easy', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -181,7 +198,8 @@ const data = [
       { texto: 'Start', correta: true },
       { texto: 'Finish', correta: false },
       { texto: 'Break', correta: false },
-      { texto: 'Forget', correta: false }
+      { texto: 'Forget', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -191,17 +209,19 @@ const data = [
       { texto: 'Hard', correta: true },
       { texto: 'Simple', correta: false },
       { texto: 'Light', correta: false },
-      { texto: 'Weak', correta: false }
+      { texto: 'Weak', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Vocabulary',
-    texto: 'What does "customer" mean?',
+    texto: 'What does "customer" mean in a store?',
     alternativas: [
       { texto: 'A person who buys something', correta: true },
       { texto: 'A person who teaches', correta: false },
       { texto: 'A person who drives buses', correta: false },
-      { texto: 'A person who repairs shoes', correta: false }
+      { texto: 'A person who repairs shoes', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -211,7 +231,8 @@ const data = [
       { texto: 'remember', correta: true },
       { texto: 'listen', correta: false },
       { texto: 'drink', correta: false },
-      { texto: 'paint', correta: false }
+      { texto: 'paint', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -221,17 +242,19 @@ const data = [
       { texto: 'Rainy', correta: true },
       { texto: 'Chair', correta: false },
       { texto: 'Wallet', correta: false },
-      { texto: 'Keyboard', correta: false }
+      { texto: 'Keyboard', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Vocabulary',
-    texto: 'What is a "deadline"?',
+    texto: 'What is a "deadline" at work or school?',
     alternativas: [
       { texto: 'The final time to complete something', correta: true },
       { texto: 'A type of food', correta: false },
       { texto: 'A place to sleep', correta: false },
-      { texto: 'A small animal', correta: false }
+      { texto: 'A small animal', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -241,7 +264,8 @@ const data = [
       { texto: 'Slowly', correta: false },
       { texto: 'Fast', correta: true },
       { texto: 'Sadly', correta: false },
-      { texto: 'Clearly', correta: false }
+      { texto: 'Clearly', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -251,7 +275,8 @@ const data = [
       { texto: 'To become better', correta: true },
       { texto: 'To become worse', correta: false },
       { texto: 'To disappear', correta: false },
-      { texto: 'To refuse', correta: false }
+      { texto: 'To refuse', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -261,7 +286,8 @@ const data = [
       { texto: 'advices', correta: false },
       { texto: 'advice', correta: true },
       { texto: 'advise', correta: false },
-      { texto: 'advising', correta: false }
+      { texto: 'advising', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
@@ -271,341 +297,375 @@ const data = [
       { texto: 'To continue', correta: false },
       { texto: 'To stop trying', correta: true },
       { texto: 'To wake up', correta: false },
-      { texto: 'To arrive', correta: false }
+      { texto: 'To arrive', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
 
   {
     categoria: 'Verb Tenses',
-    texto: 'Complete: "She ____ coffee every morning."',
+    texto: 'Complete the sentence: "She ____ coffee every morning."',
     alternativas: [
       { texto: 'drink', correta: false },
       { texto: 'drinks', correta: true },
       { texto: 'is drink', correta: false },
-      { texto: 'drank', correta: false }
+      { texto: 'drank', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Verb Tenses',
-    texto: 'Complete: "They ____ soccer now."',
+    texto: 'Complete the sentence: "They ____ soccer now."',
     alternativas: [
       { texto: 'play', correta: false },
       { texto: 'played', correta: false },
       { texto: 'are playing', correta: true },
-      { texto: 'plays', correta: false }
+      { texto: 'plays', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Verb Tenses',
-    texto: 'Complete: "I ____ my homework yesterday."',
+    texto: 'Complete the sentence: "I ____ my homework yesterday."',
     alternativas: [
       { texto: 'finish', correta: false },
       { texto: 'finished', correta: true },
       { texto: 'finishes', correta: false },
-      { texto: 'am finishing', correta: false }
+      { texto: 'am finishing', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Verb Tenses',
-    texto: 'Complete: "We ____ to London next year."',
+    texto: 'Complete the sentence: "We ____ to London next year."',
     alternativas: [
       { texto: 'travel', correta: false },
       { texto: 'traveled', correta: false },
       { texto: 'will travel', correta: true },
-      { texto: 'travels', correta: false }
+      { texto: 'travels', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Verb Tenses',
-    texto: 'Complete: "He ____ here since 2020."',
+    texto: 'Complete the sentence: "He ____ here since 2020."',
     alternativas: [
       { texto: 'has lived', correta: true },
       { texto: 'lived', correta: false },
       { texto: 'lives', correta: false },
-      { texto: 'is living yesterday', correta: false }
+      { texto: 'is living yesterday', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Verb Tenses',
-    texto: 'Complete: "When I called her, she ____."',
+    texto: 'Complete the sentence: "When I called her, she ____."',
     alternativas: [
       { texto: 'was sleeping', correta: true },
       { texto: 'sleeps', correta: false },
       { texto: 'has slept', correta: false },
-      { texto: 'will sleep', correta: false }
+      { texto: 'will sleep', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Verb Tenses',
-    texto: 'Complete: "By the time we arrived, the movie ____."',
+    texto: 'Complete the sentence: "By the time we arrived, the movie ____."',
     alternativas: [
       { texto: 'started', correta: false },
       { texto: 'had started', correta: true },
       { texto: 'starts', correta: false },
-      { texto: 'is starting', correta: false }
+      { texto: 'is starting', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Verb Tenses',
-    texto: 'Complete: "Look at those clouds! It ____ rain."',
+    texto: 'Complete the sentence: "Look at those clouds! It ____ rain."',
     alternativas: [
       { texto: 'is going to', correta: true },
       { texto: 'was', correta: false },
       { texto: 'has', correta: false },
-      { texto: 'did', correta: false }
+      { texto: 'did', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Verb Tenses',
-    texto: 'Complete: "I ____ never ____ sushi before."',
+    texto: 'Complete the sentence: "I ____ never ____ sushi before."',
     alternativas: [
       { texto: 'have / eaten', correta: true },
       { texto: 'did / ate', correta: false },
       { texto: 'am / eating', correta: false },
-      { texto: 'was / eat', correta: false }
+      { texto: 'was / eat', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
 
   {
     categoria: 'Sentence Structure',
-    texto: 'Choose the correct sentence.',
+    texto: 'Choose the correct sentence about music.',
     alternativas: [
       { texto: 'She likes very much music.', correta: false },
       { texto: 'She likes music very much.', correta: true },
       { texto: 'Likes she music very much.', correta: false },
-      { texto: 'She music likes very much.', correta: false }
+      { texto: 'She music likes very much.', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Sentence Structure',
-    texto: 'Choose the correct question.',
+    texto: 'Choose the correct question about residence.',
     alternativas: [
       { texto: 'Where you live?', correta: false },
       { texto: 'Where do you live?', correta: true },
       { texto: 'Where does you live?', correta: false },
-      { texto: 'Where are you live?', correta: false }
+      { texto: 'Where are you live?', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Sentence Structure',
-    texto: 'Choose the correct negative sentence.',
+    texto: 'Choose the correct negative sentence about tea.',
     alternativas: [
       { texto: 'He don\'t like tea.', correta: false },
       { texto: 'He doesn\'t like tea.', correta: true },
       { texto: 'He not likes tea.', correta: false },
-      { texto: 'He doesn\'t likes tea.', correta: false }
+      { texto: 'He doesn\'t likes tea.', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Sentence Structure',
-    texto: 'Choose the correct sentence.',
+    texto: 'Choose the correct sentence about learning English.',
     alternativas: [
       { texto: 'I am interested in learning English.', correta: true },
       { texto: 'I interested am in learning English.', correta: false },
       { texto: 'I am in learning English interested.', correta: false },
-      { texto: 'Interested I am learning English.', correta: false }
+      { texto: 'Interested I am learning English.', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Sentence Structure',
-    texto: 'Choose the correct sentence.',
+    texto: 'Choose the correct sentence about people in a place.',
     alternativas: [
       { texto: 'There is many people here.', correta: false },
       { texto: 'There are many people here.', correta: true },
       { texto: 'There be many people here.', correta: false },
-      { texto: 'There has many people here.', correta: false }
+      { texto: 'There has many people here.', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Sentence Structure',
-    texto: 'Choose the correct sentence.',
+    texto: 'Choose the correct sentence for asking help.',
     alternativas: [
       { texto: 'Can you help me?', correta: true },
       { texto: 'You can help me?', correta: false },
       { texto: 'Help me can you?', correta: false },
-      { texto: 'Can help you me?', correta: false }
+      { texto: 'Can help you me?', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Sentence Structure',
-    texto: 'Choose the correct sentence.',
+    texto: 'Choose the correct sentence about speaking English.',
     alternativas: [
       { texto: 'She speaks English fluently.', correta: true },
       { texto: 'She speaks fluently English.', correta: false },
       { texto: 'Fluently she English speaks.', correta: false },
-      { texto: 'She English fluently speaks.', correta: false }
+      { texto: 'She English fluently speaks.', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Sentence Structure',
-    texto: 'Choose the correct sentence.',
+    texto: 'Choose the correct sentence about a red car.',
     alternativas: [
       { texto: 'I have a car red.', correta: false },
       { texto: 'I have a red car.', correta: true },
       { texto: 'I a red car have.', correta: false },
-      { texto: 'I have red a car.', correta: false }
+      { texto: 'I have red a car.', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Sentence Structure',
-    texto: 'Choose the correct sentence.',
+    texto: 'Choose the correct conditional sentence.',
     alternativas: [
       { texto: 'If I have time, I will call you.', correta: true },
       { texto: 'If I will have time, I call you.', correta: false },
       { texto: 'If have I time, I will call you.', correta: false },
-      { texto: 'If I had time, I will calls you.', correta: false }
+      { texto: 'If I had time, I will calls you.', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
 
   {
     categoria: 'Prepositions & Connectors',
-    texto: 'Complete: "The book is ____ the table."',
+    texto: 'Complete the sentence: "The book is ____ the table."',
     alternativas: [
       { texto: 'on', correta: true },
       { texto: 'at', correta: false },
       { texto: 'to', correta: false },
-      { texto: 'by', correta: false }
+      { texto: 'by', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Prepositions & Connectors',
-    texto: 'Complete: "I was born ____ July."',
+    texto: 'Complete the sentence: "I was born ____ July."',
     alternativas: [
       { texto: 'at', correta: false },
       { texto: 'on', correta: false },
       { texto: 'in', correta: true },
-      { texto: 'to', correta: false }
+      { texto: 'to', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Prepositions & Connectors',
-    texto: 'Complete: "The meeting starts ____ 9 a.m."',
+    texto: 'Complete the sentence: "The meeting starts ____ 9 a.m."',
     alternativas: [
       { texto: 'on', correta: false },
       { texto: 'at', correta: true },
       { texto: 'in', correta: false },
-      { texto: 'for', correta: false }
+      { texto: 'for', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Prepositions & Connectors',
-    texto: 'Complete: "She has studied English ____ three years."',
+    texto: 'Complete the sentence: "She has studied English ____ three years."',
     alternativas: [
       { texto: 'since', correta: false },
       { texto: 'for', correta: true },
       { texto: 'during', correta: false },
-      { texto: 'until', correta: false }
+      { texto: 'until', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Prepositions & Connectors',
-    texto: 'Complete: "He was tired, ____ he continued working."',
+    texto: 'Complete the sentence: "He was tired, ____ he continued working."',
     alternativas: [
       { texto: 'because', correta: false },
       { texto: 'so', correta: false },
       { texto: 'but', correta: true },
-      { texto: 'if', correta: false }
+      { texto: 'if', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Prepositions & Connectors',
-    texto: 'Complete: "I stayed home ____ I was sick."',
+    texto: 'Complete the sentence: "I stayed home ____ I was sick."',
     alternativas: [
       { texto: 'because', correta: true },
       { texto: 'although', correta: false },
       { texto: 'unless', correta: false },
-      { texto: 'however', correta: false }
+      { texto: 'however', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Prepositions & Connectors',
-    texto: 'Complete: "____ it was raining, they went for a walk."',
+    texto: 'Complete the sentence: "____ it was raining, they went for a walk."',
     alternativas: [
       { texto: 'Although', correta: true },
       { texto: 'Because', correta: false },
       { texto: 'So', correta: false },
-      { texto: 'And', correta: false }
+      { texto: 'And', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Prepositions & Connectors',
-    texto: 'Complete: "This gift is ____ you."',
+    texto: 'Complete the sentence: "This gift is ____ you."',
     alternativas: [
       { texto: 'for', correta: true },
       { texto: 'at', correta: false },
       { texto: 'on', correta: false },
-      { texto: 'since', correta: false }
+      { texto: 'since', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Prepositions & Connectors',
-    texto: 'Complete: "She is interested ____ science."',
+    texto: 'Complete the sentence: "She is interested ____ science."',
     alternativas: [
       { texto: 'on', correta: false },
       { texto: 'in', correta: true },
       { texto: 'at', correta: false },
-      { texto: 'for', correta: false }
+      { texto: 'for', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
 
   {
     categoria: 'Articles & Pronouns',
-    texto: 'Complete: "I saw ____ elephant at the zoo."',
+    texto: 'Complete the sentence: "I saw ____ elephant at the zoo."',
     alternativas: [
       { texto: 'a', correta: false },
       { texto: 'an', correta: true },
       { texto: 'the', correta: false },
-      { texto: 'some', correta: false }
+      { texto: 'some', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Articles & Pronouns',
-    texto: 'Complete: "This is my brother. ____ name is Lucas."',
+    texto: 'Complete the sentence: "This is my brother. ____ name is Lucas."',
     alternativas: [
       { texto: 'Her', correta: false },
       { texto: 'His', correta: true },
       { texto: 'Their', correta: false },
-      { texto: 'Its', correta: false }
+      { texto: 'Its', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Articles & Pronouns',
-    texto: 'Complete: "____ are my friends, Ana and Julia."',
+    texto: 'Complete the sentence: "____ are my friends, Ana and Julia."',
     alternativas: [
       { texto: 'This', correta: false },
       { texto: 'These', correta: true },
       { texto: 'That', correta: false },
-      { texto: 'It', correta: false }
+      { texto: 'It', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Articles & Pronouns',
-    texto: 'Complete: "Can you give ____ the book?"',
+    texto: 'Complete the sentence: "Can you give ____ the book?"',
     alternativas: [
       { texto: 'I', correta: false },
       { texto: 'me', correta: true },
       { texto: 'my', correta: false },
-      { texto: 'mine', correta: false }
+      { texto: 'mine', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Articles & Pronouns',
-    texto: 'Complete: "We visited ____ museum near the park."',
+    texto: 'Complete the sentence: "We visited ____ museum near the park."',
     alternativas: [
       { texto: 'a', correta: true },
       { texto: 'an', correta: false },
       { texto: 'some', correta: false },
-      { texto: 'many', correta: false }
+      { texto: 'many', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   },
   {
     categoria: 'Articles & Pronouns',
-    texto: 'Complete: "The students finished ____ project."',
+    texto: 'Complete the sentence: "The students finished ____ project."',
     alternativas: [
       { texto: 'they', correta: false },
       { texto: 'them', correta: false },
       { texto: 'their', correta: true },
-      { texto: 'theirs', correta: false }
+      { texto: 'theirs', correta: false },
+      { texto: 'Não sei', correta: false }
     ]
   }
 ];
