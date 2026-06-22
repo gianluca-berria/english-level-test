@@ -7,61 +7,189 @@
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <main class="app-shell">
-      <section class="hero">
-        <div>
-          <p class="eyebrow">Nivelamento de proficiencia</p>
-          <h1>English Level Test</h1>
-        </div>
-        <a class="export-link" href="/api/resultados/exportar/csv">Exportar CSV</a>
-      </section>
 
-      <section id="start-view" class="panel">
-        <h2>Identificacao do aluno</h2>
-        <form id="student-form" class="form-grid">
-          <label>
-            <span>Nome completo</span>
-            <input id="name-input" name="nome" type="text" autocomplete="name" required minlength="3">
-          </label>
-          <label>
-            <span>CPF</span>
-            <input id="cpf-input" name="cpf" type="text" inputmode="numeric" autocomplete="off" maxlength="11" required>
-          </label>
-          <button type="submit">Iniciar ou consultar resultado</button>
+    <main id="main-content" class="app-shell">
+      <header class="site-header">
+        <nav class="topbar" aria-label="Acoes principais">
+          <a class="export-link" href="/api/resultados/exportar/csv">Exportar CSV</a>
+        </nav>
+
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-content">
+            <h1 id="hero-title">English Level Test</h1>
+            <p class="hero-copy">
+              Identifique o nivel de proficiencia em ingles por meio de um teste objetivo,
+              seguro e calculado automaticamente ao final da avaliacao.
+            </p>
+          </div>
+
+          <ol class="steps" aria-label="Etapas do teste">
+            <li>
+              <span class="step-number">1</span>
+              <span>
+                <strong>Identificacao</strong>
+                <small>Informe nome completo e CPF.</small>
+              </span>
+            </li>
+            <li>
+              <span class="step-number">2</span>
+              <span>
+                <strong>Questoes</strong>
+                <small>Responda todas as perguntas.</small>
+              </span>
+            </li>
+            <li>
+              <span class="step-number">3</span>
+              <span>
+                <strong>Resultado</strong>
+                <small>Veja nivel e desempenho.</small>
+              </span>
+            </li>
+          </ol>
+        </section>
+      </header>
+
+      <section id="start-view" class="panel start-panel" aria-labelledby="student-title">
+        <div class="panel-heading">
+          <p class="eyebrow">Acesso do aluno</p>
+          <h2 id="student-title">Identificacao para iniciar ou consultar resultado</h2>
+          <p class="panel-copy">
+            O CPF e usado apenas para localizar um resultado existente ou liberar uma nova
+            tentativa quando ainda nao houver teste finalizado.
+          </p>
+        </div>
+
+        <form id="student-form" class="student-form" novalidate>
+          <div class="field-group">
+            <label for="name-input">Nome completo</label>
+            <input
+              id="name-input"
+              name="nome"
+              type="text"
+              autocomplete="name"
+              required
+              minlength="3"
+              aria-describedby="name-help name-error"
+            >
+            <p id="name-help" class="field-help">Digite o nome como deve aparecer no resultado.</p>
+            <p id="name-error" class="field-error"></p>
+          </div>
+
+          <div class="field-group">
+            <label for="cpf-input">CPF</label>
+            <input
+              id="cpf-input"
+              name="cpf"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="11"
+              required
+              aria-describedby="cpf-help cpf-error"
+            >
+            <p id="cpf-help" class="field-help">Use somente numeros, com exatamente 11 digitos.</p>
+            <p id="cpf-error" class="field-error"></p>
+          </div>
+
+          <button id="student-submit-button" class="button primary-button" type="submit">
+            <span class="button-label">Iniciar ou consultar resultado</span>
+            <span class="button-loader" aria-hidden="true"></span>
+          </button>
         </form>
       </section>
 
-      <section id="test-view" class="panel hidden">
-        <div class="section-heading">
+      <section id="test-view" class="panel hidden" aria-labelledby="test-title">
+        <div class="test-toolbar">
           <div>
             <p class="eyebrow">Teste em andamento</p>
-            <h2>Responda todas as perguntas</h2>
+            <h2 id="test-title">Responda todas as perguntas</h2>
+            <p id="question-count" class="panel-copy"></p>
           </div>
-          <p id="question-count" class="muted"></p>
+
+          <div class="progress-card" aria-live="polite">
+            <span id="question-progress-text">Questao 0 de 0</span>
+            <progress id="question-progress" value="0" max="1">0%</progress>
+          </div>
         </div>
-        <form id="test-form">
+
+        <form id="test-form" novalidate>
           <div id="questions-container" class="questions"></div>
-          <button type="submit">Finalizar teste</button>
+
+          <div class="form-actions">
+            <button id="finish-button" class="button primary-button" type="submit">
+              <span class="button-label">Finalizar teste</span>
+              <span class="button-loader" aria-hidden="true"></span>
+            </button>
+          </div>
         </form>
       </section>
 
-      <section id="result-view" class="panel hidden">
-        <div class="section-heading">
+      <section id="result-view" class="panel hidden" aria-labelledby="result-title">
+        <div class="result-hero">
           <div>
-            <p class="eyebrow">Resultado</p>
-            <h2 id="result-level"></h2>
+            <p class="eyebrow">Resultado final</p>
+            <h2 id="result-title">Nivel obtido</h2>
+            <p id="result-level" class="level-name"></p>
           </div>
-          <button id="new-search-button" type="button" class="secondary">Consultar outro CPF</button>
+          <button id="new-search-button" type="button" class="button secondary-button">
+            Consultar outro CPF
+          </button>
         </div>
-        <div id="result-summary" class="summary-grid"></div>
-        <div>
-          <h3>Desempenho por categoria</h3>
+
+        <div id="result-summary" class="summary-grid" aria-label="Resumo do resultado"></div>
+
+        <section class="result-section" aria-labelledby="category-title">
+          <div class="section-title-row">
+            <div>
+              <h3 id="category-title">Desempenho por categoria</h3>
+              <p class="panel-copy">As barras mostram acertos e erros com valores em texto.</p>
+            </div>
+          </div>
           <div id="category-performance" class="category-list"></div>
-        </div>
+        </section>
+
+        <section class="result-section" aria-labelledby="levels-title">
+          <h3 id="levels-title">Faixas de proficiencia</h3>
+          <ul id="level-scale" class="level-scale" aria-label="Faixas de nivel">
+            <li data-level="Beginner">
+              <strong>Beginner</strong>
+              <span>0 a 30%</span>
+            </li>
+            <li data-level="Elementary">
+              <strong>Elementary</strong>
+              <span>31 a 50%</span>
+            </li>
+            <li data-level="Intermediate">
+              <strong>Intermediate</strong>
+              <span>51 a 70%</span>
+            </li>
+            <li data-level="Upper Intermediate">
+              <strong>Upper Intermediate</strong>
+              <span>71 a 85%</span>
+            </li>
+            <li data-level="Advanced">
+              <strong>Advanced</strong>
+              <span>86 a 100%</span>
+            </li>
+          </ul>
+        </section>
       </section>
 
-      <p id="message" class="message" role="status"></p>
+      <p id="message" class="message" role="status" aria-live="polite"></p>
     </main>
+
+  <footer class="site-footer">
+    <p>
+      Desenvolvido por
+      <a
+        href="https://github.com/gianluca-berria"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Gianluca Berria
+      </a>
+    </p>
+  </footer>
 
     <script src="/app.js"></script>
   </body>

@@ -1,75 +1,109 @@
 const state = {
   aluno: null,
-  perguntas: []
+  perguntas: [],
+  isCheckingStudent: false,
+  isSubmittingTest: false
 };
 
-const startView = document.querySelector('#start-view');
-const testView = document.querySelector('#test-view');
-const resultView = document.querySelector('#result-view');
-const studentForm = document.querySelector('#student-form');
-const testForm = document.querySelector('#test-form');
-const nameInput = document.querySelector('#name-input');
-const cpfInput = document.querySelector('#cpf-input');
-const message = document.querySelector('#message');
-const questionsContainer = document.querySelector('#questions-container');
-const questionCount = document.querySelector('#question-count');
-const resultLevel = document.querySelector('#result-level');
-const resultSummary = document.querySelector('#result-summary');
-const categoryPerformance = document.querySelector('#category-performance');
-const newSearchButton = document.querySelector('#new-search-button');
+const elements = {
+  startView: document.querySelector('#start-view'),
+  testView: document.querySelector('#test-view'),
+  resultView: document.querySelector('#result-view'),
+  studentForm: document.querySelector('#student-form'),
+  testForm: document.querySelector('#test-form'),
+  nameInput: document.querySelector('#name-input'),
+  cpfInput: document.querySelector('#cpf-input'),
+  nameError: document.querySelector('#name-error'),
+  cpfError: document.querySelector('#cpf-error'),
+  message: document.querySelector('#message'),
+  questionsContainer: document.querySelector('#questions-container'),
+  questionCount: document.querySelector('#question-count'),
+  questionProgressText: document.querySelector('#question-progress-text'),
+  questionProgress: document.querySelector('#question-progress'),
+  resultLevel: document.querySelector('#result-level'),
+  resultSummary: document.querySelector('#result-summary'),
+  categoryPerformance: document.querySelector('#category-performance'),
+  levelScale: document.querySelector('#level-scale'),
+  newSearchButton: document.querySelector('#new-search-button'),
+  studentSubmitButton: document.querySelector('#student-submit-button'),
+  finishButton: document.querySelector('#finish-button')
+};
 
-cpfInput.addEventListener('input', () => {
-  cpfInput.value = cpfInput.value.replace(/\D/g, '').slice(0, 11);
-});
+init();
 
-studentForm.addEventListener('submit', async (event) => {
+function init() {
+  elements.cpfInput.addEventListener('input', handleCpfInput);
+  elements.nameInput.addEventListener('input', validateStudentFields);
+  elements.studentForm.addEventListener('submit', handleStudentSubmit);
+  elements.testForm.addEventListener('submit', handleTestSubmit);
+  elements.questionsContainer.addEventListener('change', handleAnswerChange);
+  elements.newSearchButton.addEventListener('click', resetToStart);
+
+  updateQuestionProgress();
+}
+
+function handleCpfInput() {
+  elements.cpfInput.value = elements.cpfInput.value.replace(/\D/g, '').slice(0, 11);
+  validateStudentFields();
+}
+
+async function handleStudentSubmit(event) {
   event.preventDefault();
-  setMessage('');
+  clearGlobalMessage();
 
-  const nome = nameInput.value.trim();
-  const cpf = cpfInput.value.trim();
-
-  if (!nome || cpf.length !== 11 || !/^\d+$/.test(cpf)) {
-    setMessage('Informe nome completo e CPF com exatamente 11 numeros.');
+  if (state.isCheckingStudent || !validateStudentFields()) {
     return;
   }
+
+  const aluno = getStudentPayload();
+  setButtonLoading(elements.studentSubmitButton, true, 'Consultando...');
+  state.isCheckingStudent = true;
 
   try {
     const verification = await requestJson('/api/alunos/verificar', {
       method: 'POST',
-      body: JSON.stringify({ nome, cpf })
+      body: JSON.stringify(aluno)
     });
 
     if (verification.jaRealizou) {
       renderResult(verification.resultado);
-      showView(resultView);
+      showView(elements.resultView);
+      setGlobalMessage('Resultado existente localizado para este CPF.', 'success');
       return;
     }
 
-    state.aluno = { nome, cpf };
+    state.aluno = aluno;
     await loadQuestions();
-    showView(testView);
+    showView(elements.testView);
+    setGlobalMessage('Teste liberado. Responda todas as questoes para finalizar.', 'success');
   } catch (error) {
-    setMessage(error.message);
+    setGlobalMessage(error.message);
+  } finally {
+    state.isCheckingStudent = false;
+    setButtonLoading(elements.studentSubmitButton, false);
   }
-});
+}
 
-testForm.addEventListener('submit', async (event) => {
+async function handleTestSubmit(event) {
   event.preventDefault();
-  setMessage('');
+  clearGlobalMessage();
 
-  const respostas = state.perguntas.map((pergunta) => {
-    const selected = document.querySelector(`input[name="pergunta-${pergunta.id}"]:checked`);
-    return {
-      perguntaId: pergunta.id,
-      alternativaId: selected ? Number(selected.value) : null
-    };
-  });
-
-  if (respostas.some((resposta) => !resposta.alternativaId)) {
-    setMessage('Responda todas as perguntas antes de finalizar.');
+  if (state.isSubmittingTest) {
     return;
   }
+
+  const respostas = collectAnswers();
+  const firstIncomplete = findFirstIncompleteQuestion(respostas);
+
+  if (firstIncomplete) {
+    markIncompleteQuestions(respostas);
+    setGlobalMessage('Responda todas as perguntas antes de finalizar. A primeira pendencia foi destacada.');
+    focusQuestion(firstIncomplete);
+    return;
+  }
+
+  setButtonLoading(elements.finishButton, true, 'Enviando...');
+  state.isSubmittingTest = true;
 
   try {
     const result = await requestJson('/api/resultados', {
@@ -82,17 +116,26 @@ testForm.addEventListener('submit', async (event) => {
     });
 
     renderResult(result);
-    showView(resultView);
+    showView(elements.resultView);
+    setGlobalMessage('Teste finalizado e resultado salvo com sucesso.', 'success');
   } catch (error) {
-    setMessage(error.message);
+    setGlobalMessage(error.message);
+  } finally {
+    state.isSubmittingTest = false;
+    setButtonLoading(elements.finishButton, false);
   }
-});
+}
 
-newSearchButton.addEventListener('click', () => {
-  setMessage('');
-  testForm.reset();
-  showView(startView);
-});
+function handleAnswerChange(event) {
+  if (event.target.matches('input[type="radio"]')) {
+    const question = event.target.closest('.question');
+    if (question) {
+      question.classList.remove('is-incomplete');
+    }
+
+    updateQuestionProgress();
+  }
+}
 
 async function loadQuestions() {
   state.perguntas = await requestJson('/api/perguntas');
@@ -102,109 +145,260 @@ async function loadQuestions() {
   }
 
   renderQuestions(state.perguntas);
+  updateQuestionProgress();
 }
 
 function renderQuestions(perguntas) {
-  questionsContainer.replaceChildren();
-  questionCount.textContent = `${perguntas.length} perguntas`;
+  elements.questionsContainer.replaceChildren();
+  elements.questionCount.textContent = `${perguntas.length} perguntas cadastradas para esta avaliacao.`;
 
   perguntas.forEach((pergunta, index) => {
-    const article = document.createElement('article');
-    article.className = 'question';
-
-    const header = document.createElement('div');
-    header.className = 'question-header';
-
-    const title = document.createElement('h3');
-    title.textContent = `${index + 1}. ${pergunta.texto}`;
-
-    const category = document.createElement('span');
-    category.className = 'category-badge';
-    category.textContent = pergunta.categoria.nome;
-
-    header.append(title, category);
-
-    const alternatives = document.createElement('div');
-    alternatives.className = 'alternatives';
-
-    pergunta.alternativas.forEach((alternativa) => {
-      const label = document.createElement('label');
-      label.className = 'alternative';
-
-      const input = document.createElement('input');
-      input.type = 'radio';
-      input.name = `pergunta-${pergunta.id}`;
-      input.value = String(alternativa.id);
-
-      const text = document.createElement('span');
-      text.textContent = alternativa.texto;
-
-      label.append(input, text);
-      alternatives.append(label);
-    });
-
-    article.append(header, alternatives);
-    questionsContainer.append(article);
+    elements.questionsContainer.append(createQuestionCard(pergunta, index, perguntas.length));
   });
 }
 
-function renderResult(result) {
-  resultLevel.textContent = result.nivel;
-  resultSummary.replaceChildren();
-  categoryPerformance.replaceChildren();
+function createQuestionCard(pergunta, index, total) {
+  const article = document.createElement('article');
+  article.className = 'question';
+  article.id = `question-${pergunta.id}`;
+  article.tabIndex = -1;
 
+  const header = document.createElement('div');
+  header.className = 'question-header';
+
+  const title = document.createElement('h3');
+  title.textContent = pergunta.texto;
+
+  const meta = document.createElement('div');
+  meta.className = 'question-meta';
+
+  const position = document.createElement('span');
+  position.className = 'question-position';
+  position.textContent = `Questao ${index + 1} de ${total}`;
+
+  const category = document.createElement('span');
+  category.className = 'category-badge';
+  category.textContent = pergunta.categoria.nome;
+
+  meta.append(position, category);
+  header.append(title, meta);
+
+  const alternatives = document.createElement('div');
+  alternatives.className = 'alternatives';
+  alternatives.setAttribute('role', 'radiogroup');
+  alternatives.setAttribute('aria-label', `Alternativas da questao ${index + 1}`);
+
+  pergunta.alternativas.forEach((alternativa) => {
+    alternatives.append(createAlternative(pergunta.id, alternativa));
+  });
+
+  article.append(header, alternatives);
+  return article;
+}
+
+function createAlternative(perguntaId, alternativa) {
+  const label = document.createElement('label');
+  label.className = 'alternative';
+
+  const input = document.createElement('input');
+  input.type = 'radio';
+  input.name = `pergunta-${perguntaId}`;
+  input.value = String(alternativa.id);
+
+  const text = document.createElement('span');
+  text.textContent = alternativa.texto;
+
+  label.append(input, text);
+  return label;
+}
+
+function collectAnswers() {
+  return state.perguntas.map((pergunta) => {
+    const selected = document.querySelector(`input[name="pergunta-${pergunta.id}"]:checked`);
+
+    return {
+      perguntaId: pergunta.id,
+      alternativaId: selected ? Number(selected.value) : null
+    };
+  });
+}
+
+function findFirstIncompleteQuestion(respostas) {
+  const incomplete = respostas.find((resposta) => !resposta.alternativaId);
+  return incomplete ? document.querySelector(`#question-${incomplete.perguntaId}`) : null;
+}
+
+function markIncompleteQuestions(respostas) {
+  respostas.forEach((resposta) => {
+    const question = document.querySelector(`#question-${resposta.perguntaId}`);
+    if (question) {
+      question.classList.toggle('is-incomplete', !resposta.alternativaId);
+    }
+  });
+}
+
+function focusQuestion(question) {
+  question.scrollIntoView({ behavior: getScrollBehavior(), block: 'center' });
+  question.focus({ preventScroll: true });
+}
+
+function updateQuestionProgress() {
+  const total = state.perguntas.length;
+  const answered = total === 0 ? 0 : collectAnswers().filter((resposta) => resposta.alternativaId).length;
+  const percent = total === 0 ? 0 : Math.round((answered / total) * 100);
+
+  elements.questionProgress.max = total || 1;
+  elements.questionProgress.value = answered;
+  elements.questionProgress.textContent = `${percent}%`;
+  elements.questionProgressText.textContent = `Questão ${answered} de ${total}`;
+}
+
+function renderResult(result) {
+  elements.resultLevel.textContent = result.nivel;
+  elements.resultSummary.replaceChildren();
+  elements.categoryPerformance.replaceChildren();
+
+  renderResultMetrics(result);
+  renderCategoryPerformance(result.desempenhoPorCategoria || {});
+  highlightLevel(result.nivel);
+}
+
+function renderResultMetrics(result) {
   const date = new Date(result.dataRealizacao);
+  const formattedDate = Number.isNaN(date.getTime())
+    ? result.dataRealizacao
+    : date.toLocaleString('pt-BR');
+
   const metrics = [
     ['Nome', result.nome],
     ['CPF', result.cpf],
-    ['Data', Number.isNaN(date.getTime()) ? result.dataRealizacao : date.toLocaleString('pt-BR')],
+    ['Data', formattedDate],
     ['Acertos', `${result.acertos} de ${result.totalQuestoes}`],
     ['Percentual', `${result.percentualGeral}%`],
     ['Nivel', result.nivel]
   ];
 
   metrics.forEach(([label, value]) => {
-    const metric = document.createElement('div');
-    metric.className = 'metric';
-
-    const span = document.createElement('span');
-    span.textContent = label;
-
-    const strong = document.createElement('strong');
-    strong.textContent = value;
-
-    metric.append(span, strong);
-    resultSummary.append(metric);
+    elements.resultSummary.append(createMetric(label, value));
   });
+}
 
-  Object.entries(result.desempenhoPorCategoria || {}).forEach(([categoria, item]) => {
-    const row = document.createElement('div');
-    row.className = 'category-row';
+function createMetric(label, value) {
+  const metric = document.createElement('div');
+  metric.className = 'metric';
 
-    const header = document.createElement('div');
-    header.className = 'category-row-header';
+  const labelElement = document.createElement('span');
+  labelElement.textContent = label;
 
-    const title = document.createElement('span');
-    title.textContent = categoria;
+  const valueElement = document.createElement('strong');
+  valueElement.textContent = value;
 
-    const values = document.createElement('span');
-    values.textContent = `${item.acertos} acertos, ${item.erros} erros (${item.percentual}%)`;
+  metric.append(labelElement, valueElement);
+  return metric;
+}
 
-    const bar = document.createElement('div');
-    bar.className = 'bar';
-    bar.style.setProperty('--correct-width', `${item.percentual}%`);
-
-    const correct = document.createElement('div');
-    correct.className = 'bar-correct';
-
-    const wrong = document.createElement('div');
-    wrong.className = 'bar-wrong';
-
-    header.append(title, values);
-    bar.append(correct, wrong);
-    row.append(header, bar);
-    categoryPerformance.append(row);
+function renderCategoryPerformance(performance) {
+  Object.entries(performance).forEach(([categoria, item]) => {
+    elements.categoryPerformance.append(createCategoryRow(categoria, item));
   });
+}
+
+function createCategoryRow(categoria, item) {
+  const row = document.createElement('div');
+  row.className = 'category-row';
+
+  const header = document.createElement('div');
+  header.className = 'category-row-header';
+
+  const title = document.createElement('span');
+  title.textContent = categoria;
+
+  const values = document.createElement('span');
+  values.className = 'category-values';
+  values.textContent = `${item.acertos} acertos, ${item.erros} erros, ${item.percentual}% de aproveitamento`;
+
+  const barGroup = document.createElement('div');
+  barGroup.className = 'category-bar-group';
+
+  const barLabel = document.createElement('div');
+  barLabel.className = 'category-bar-label';
+
+  const labelStart = document.createElement('strong');
+  labelStart.textContent = 'Acertos';
+
+  const labelEnd = document.createElement('span');
+  labelEnd.textContent = `${item.acertos}/${item.total}`;
+
+  const progress = document.createElement('progress');
+  progress.max = item.total || 1;
+  progress.value = item.acertos;
+  progress.textContent = `${item.percentual}%`;
+  progress.setAttribute('aria-label', `${categoria}: ${item.acertos} acertos de ${item.total}`);
+
+  header.append(title, values);
+  barLabel.append(labelStart, labelEnd);
+  barGroup.append(barLabel, progress);
+  row.append(header, barGroup);
+
+  return row;
+}
+
+function highlightLevel(level) {
+  elements.levelScale.querySelectorAll('li').forEach((item) => {
+    const isCurrent = item.dataset.level === level;
+    item.classList.toggle('is-current', isCurrent);
+
+    if (isCurrent) {
+      item.setAttribute('aria-current', 'true');
+    } else {
+      item.removeAttribute('aria-current');
+    }
+  });
+}
+
+function validateStudentFields() {
+  const { nome, cpf } = getStudentPayload();
+  let isValid = true;
+
+  clearFieldError(elements.nameInput, elements.nameError);
+  clearFieldError(elements.cpfInput, elements.cpfError);
+
+  if (nome.length < 3) {
+    setFieldError(elements.nameInput, elements.nameError, 'Informe o nome completo.');
+    isValid = false;
+  }
+
+  if (!/^\d{11}$/.test(cpf)) {
+    setFieldError(elements.cpfInput, elements.cpfError, 'Digite exatamente 11 numeros.');
+    isValid = false;
+  }
+
+  return isValid;
+}
+
+function getStudentPayload() {
+  return {
+    nome: elements.nameInput.value.trim(),
+    cpf: elements.cpfInput.value.trim()
+  };
+}
+
+function setFieldError(input, output, text) {
+  input.setAttribute('aria-invalid', 'true');
+  output.textContent = text;
+}
+
+function clearFieldError(input, output) {
+  input.removeAttribute('aria-invalid');
+  output.textContent = '';
+}
+
+function resetToStart() {
+  clearGlobalMessage();
+  elements.testForm.reset();
+  state.aluno = null;
+  showView(elements.startView);
+  elements.nameInput.focus();
 }
 
 async function requestJson(url, options = {}) {
@@ -226,12 +420,40 @@ async function requestJson(url, options = {}) {
 }
 
 function showView(view) {
-  startView.classList.add('hidden');
-  testView.classList.add('hidden');
-  resultView.classList.add('hidden');
+  elements.startView.classList.add('hidden');
+  elements.testView.classList.add('hidden');
+  elements.resultView.classList.add('hidden');
   view.classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: getScrollBehavior() });
 }
 
-function setMessage(text) {
-  message.textContent = text;
+function getScrollBehavior() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+function setButtonLoading(button, isLoading, loadingText) {
+  const label = button.querySelector('.button-label');
+
+  button.disabled = isLoading;
+  button.setAttribute('aria-busy', String(isLoading));
+
+  if (isLoading) {
+    button.dataset.defaultLabel = label.textContent;
+    label.textContent = loadingText || label.textContent;
+    return;
+  }
+
+  if (button.dataset.defaultLabel) {
+    label.textContent = button.dataset.defaultLabel;
+    delete button.dataset.defaultLabel;
+  }
+}
+
+function setGlobalMessage(text, type) {
+  elements.message.textContent = text;
+  elements.message.classList.toggle('success', type === 'success');
+}
+
+function clearGlobalMessage() {
+  setGlobalMessage('');
 }
