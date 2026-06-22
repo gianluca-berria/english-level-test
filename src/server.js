@@ -55,6 +55,10 @@ app.use((error, _req, res, _next) => {
   });
 });
 
-app.listen(port, host, () => {
-  console.log(`Servidor rodando na porta ${port}`);
-});
+if (require.main === module) {
+  app.listen(port, host, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+  });
+}
+
+module.exports = app;

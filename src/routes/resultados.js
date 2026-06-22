@@ -2,7 +2,7 @@ const express = require('express');
 const prisma = require('../prisma');
 const { isValidCpf, normalizeCpf } = require('../services/cpf');
 const { calculatePerformance } = require('../services/proficiency');
-const { resultsToCsv } = require('../services/csv');
+const { getResultCsvForCpf } = require('../services/resultCsvExport');
 const { serializeResult } = require('../services/resultSerializer');
 
 const router = express.Router();
@@ -108,17 +108,18 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.get('/exportar/csv', async (_req, res, next) => {
+router.get('/:cpf/exportar/csv', async (req, res, next) => {
   try {
-    const resultados = await prisma.resultado.findMany({
-      orderBy: { dataRealizacao: 'desc' },
-      include: { aluno: true }
-    });
+    const exportFile = await getResultCsvForCpf(req.params.cpf, prisma);
 
     res.header('Content-Type', 'text/csv; charset=utf-8');
-    res.header('Content-Disposition', 'attachment; filename="resultados.csv"');
-    return res.send(resultsToCsv(resultados));
+    res.header('Content-Disposition', `attachment; filename="${exportFile.filename}"`);
+    return res.send(exportFile.csv);
   } catch (error) {
+    if (error.statusCode && error.publicMessage) {
+      return res.status(error.statusCode).json({ message: error.publicMessage });
+    }
+
     return next(error);
   }
 });

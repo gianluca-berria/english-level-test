@@ -1,29 +1,31 @@
 function resultsToCsv(resultados) {
   const headers = [
-    'id',
-    'nome',
-    'cpf',
-    'dataRealizacao',
-    'acertos',
-    'totalQuestoes',
-    'percentualGeral',
-    'nivel',
-    'desempenhoPorCategoria'
+    'Nome',
+    'CPF',
+    'Nivel',
+    'Acertos',
+    'Total',
+    'Percentual',
+    'Data',
+    'DesempenhoPorCategoria'
   ];
 
   const rows = resultados.map((resultado) => [
-    resultado.id,
     resultado.aluno.nome,
     resultado.cpf,
-    resultado.dataRealizacao.toISOString(),
+    resultado.nivel,
     resultado.acertos,
     resultado.totalQuestoes,
     resultado.percentualGeral,
-    resultado.nivel,
+    resultado.dataRealizacao.toISOString(),
     JSON.stringify(resultado.desempenhoPorCategoria)
   ]);
 
   return [headers, ...rows].map((row) => row.map(escapeCsv).join(',')).join('\n');
+}
+
+function resultToCsv(resultado) {
+  return resultsToCsv([resultado]);
 }
 
 function escapeCsv(value) {
@@ -36,5 +38,6 @@ function escapeCsv(value) {
 }
 
 module.exports = {
+  resultToCsv,
   resultsToCsv
 };

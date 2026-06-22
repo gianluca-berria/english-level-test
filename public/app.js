@@ -1,8 +1,10 @@
 const state = {
   aluno: null,
+  currentResult: null,
   perguntas: [],
   isCheckingStudent: false,
-  isSubmittingTest: false
+  isSubmittingTest: false,
+  isExportingCsv: false
 };
 
 const elements = {
@@ -25,6 +27,7 @@ const elements = {
   categoryPerformance: document.querySelector('#category-performance'),
   levelScale: document.querySelector('#level-scale'),
   newSearchButton: document.querySelector('#new-search-button'),
+  exportResultButton: document.querySelector('#export-result-button'),
   studentSubmitButton: document.querySelector('#student-submit-button'),
   finishButton: document.querySelector('#finish-button')
 };
@@ -38,6 +41,7 @@ function init() {
   elements.testForm.addEventListener('submit', handleTestSubmit);
   elements.questionsContainer.addEventListener('change', handleAnswerChange);
   elements.newSearchButton.addEventListener('click', resetToStart);
+  elements.exportResultButton.addEventListener('click', handleResultExport);
 
   updateQuestionProgress();
 }
@@ -254,13 +258,59 @@ function updateQuestionProgress() {
 }
 
 function renderResult(result) {
+  state.currentResult = result;
   elements.resultLevel.textContent = result.nivel;
   elements.resultSummary.replaceChildren();
   elements.categoryPerformance.replaceChildren();
+  elements.exportResultButton.classList.toggle('hidden', !result.cpf);
 
   renderResultMetrics(result);
   renderCategoryPerformance(result.desempenhoPorCategoria || {});
   highlightLevel(result.nivel);
+}
+
+async function handleResultExport() {
+  clearGlobalMessage();
+
+  if (state.isExportingCsv || !state.currentResult || !state.currentResult.cpf) {
+    return;
+  }
+
+  state.isExportingCsv = true;
+  setButtonLoading(elements.exportResultButton, true, 'Preparando...');
+
+  try {
+    const cpf = encodeURIComponent(state.currentResult.cpf);
+    const response = await fetch(`/api/resultados/${cpf}/exportar/csv`);
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.message || 'Nao foi possivel exportar o resultado.');
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = getCsvFilename(response) || `resultado-${state.currentResult.cpf}.csv`;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setGlobalMessage('CSV do resultado preparado com sucesso.', 'success');
+  } catch (error) {
+    setGlobalMessage(error.message || 'Nao foi possivel exportar o resultado.');
+  } finally {
+    state.isExportingCsv = false;
+    setButtonLoading(elements.exportResultButton, false);
+  }
+}
+
+function getCsvFilename(response) {
+  const disposition = response.headers.get('Content-Disposition') || '';
+  const match = disposition.match(/filename="?([^"]+)"?/i);
+  return match ? match[1] : '';
 }
 
 function renderResultMetrics(result) {
@@ -397,6 +447,8 @@ function resetToStart() {
   clearGlobalMessage();
   elements.testForm.reset();
   state.aluno = null;
+  state.currentResult = null;
+  elements.exportResultButton.classList.add('hidden');
   showView(elements.startView);
   elements.nameInput.focus();
 }

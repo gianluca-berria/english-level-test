@@ -10,10 +10,6 @@
 
     <main id="main-content" class="app-shell">
       <header class="site-header">
-        <nav class="topbar" aria-label="Acoes principais">
-          <a class="export-link" href="/api/resultados/exportar/csv">Exportar CSV</a>
-        </nav>
-
         <section class="hero" aria-labelledby="hero-title">
           <div class="hero-content">
             <h1 id="hero-title">English Level Test</h1>
@@ -131,9 +127,15 @@
             <h2 id="result-title">Nivel obtido</h2>
             <p id="result-level" class="level-name"></p>
           </div>
-          <button id="new-search-button" type="button" class="button secondary-button">
-            Consultar outro CPF
-          </button>
+          <div class="result-actions">
+            <button id="export-result-button" type="button" class="button secondary-button hidden">
+              <span class="button-label">Baixar resultado em CSV</span>
+              <span class="button-loader" aria-hidden="true"></span>
+            </button>
+            <button id="new-search-button" type="button" class="button secondary-button">
+              Consultar outro CPF
+            </button>
+          </div>
         </div>
 
         <div id="result-summary" class="summary-grid" aria-label="Resumo do resultado"></div>

@@ -8,7 +8,7 @@ Fluxo obrigatorio da aplicacao:
 
 Frontend HTML/CSS/JavaScript puro -> Backend Node.js/Express -> Prisma ORM -> PostgreSQL
 
-O frontend nao acessa o banco diretamente. Toda validacao sensivel, bloqueio de reaplicacao, calculo de resultado, calculo de nivel, auditoria, persistencia e exportacao CSV ficam no backend.
+O frontend nao acessa o banco diretamente. Toda validacao sensivel, bloqueio de reaplicacao, calculo de resultado, calculo de nivel, auditoria, persistencia e exportacao CSV individual ficam no backend.
 
 ## Stack
 
@@ -65,6 +65,7 @@ Acesse `http://localhost:3000`.
 
 - `npm run dev`: inicia o servidor com `nodemon`
 - `npm start`: inicia o servidor com Node
+- `npm test`: executa os testes automatizados com `node:test`
 - `npm run prisma:migrate`: executa migrations do Prisma
 - `npm run prisma:seed`: popula categorias, perguntas e alternativas iniciais
 
@@ -110,9 +111,15 @@ O backend valida CPF, impede nova tentativa para CPF com resultado, valida pergu
 
 Consulta resultado individual por CPF.
 
-### GET `/api/resultados/exportar/csv`
+### GET `/api/resultados/:cpf/exportar/csv`
 
-Exporta todos os resultados em CSV.
+Exporta somente o resultado individual do CPF informado em CSV.
+
+- O CPF e normalizado e validado no backend.
+- CPF invalido retorna `400`.
+- CPF sem resultado retorna `404`.
+- O arquivo e retornado como `resultado-<cpf>.csv`.
+- A rota publica nao exporta resultados de outros alunos.
 
 ## Regras de negocio implementadas
 
@@ -129,7 +136,8 @@ Exporta todos os resultados em CSV.
 - Cada resposta salva snapshots de categoria, pergunta e alternativa escolhida para preservar historico.
 - Resultados antigos mantem vinculo com as perguntas respondidas.
 - A persistencia usa Prisma, sem SQL manual no codigo da aplicacao.
-- CSV e gerado no backend.
+- CSV individual e gerado no backend.
+- A exportacao publica geral de resultados nao esta disponivel.
 
 ## Nivel de proficiencia
 
