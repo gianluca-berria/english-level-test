@@ -36,9 +36,11 @@ cp .env.example .env
 
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/english_level_test?schema=public"
+DIRECT_URL="postgresql://postgres:postgres@localhost:5432/english_level_test?schema=public"
 PORT=3000
-HOST="127.0.0.1"
-CORS_ORIGIN="http://localhost:3000"
+ADMIN_USERNAME="admin"
+ADMIN_PASSWORD="substitua-por-uma-senha-forte"
+ADMIN_SESSION_SECRET="gere-uma-chave-aleatoria-com-pelo-menos-32-caracteres"
 ```
 
 4. Execute as migrations:
@@ -60,6 +62,26 @@ npm run dev
 ```
 
 Acesse `http://localhost:3000`.
+
+## Área administrativa
+
+Acesse `http://localhost:3000/admin` e faça login com `ADMIN_USERNAME` e
+`ADMIN_PASSWORD`. A credencial configurada no ambiente não é embutida nem
+retornada pelo frontend; o backend valida o login. `ADMIN_SESSION_SECRET`
+assina uma sessão temporária de oito horas armazenada em cookie `HttpOnly`,
+`SameSite=Strict` e `Secure` em produção.
+
+O painel permite:
+
+- criar, listar, editar e excluir categorias;
+- criar, listar, editar, ativar, desativar e excluir perguntas;
+- criar, listar, editar e excluir alternativas;
+- trocar a alternativa correta de uma pergunta.
+
+Categorias com perguntas associadas não podem ser excluídas. Perguntas e
+alternativas utilizadas em resultados também são preservadas para manter a
+integridade do histórico. Nesse caso, a pergunta pode ser desativada para não
+aparecer em novos testes.
 
 ## Scripts
 
@@ -87,6 +109,21 @@ Valida CPF no backend. Se ja existir resultado valido para o CPF, retorna `jaRea
 ### GET `/api/perguntas`
 
 Retorna perguntas ativas, categoria e alternativas. O campo `correta` nunca e retornado ao frontend.
+
+### API administrativa
+
+Todos os endpoints abaixo de `/api/admin`, exceto o login, exigem a sessão
+administrativa assinada:
+
+- `POST /api/admin/auth/login`
+- `GET /api/admin/auth/session`
+- `POST /api/admin/auth/logout`
+- `GET|POST /api/admin/categorias`
+- `PUT|DELETE /api/admin/categorias/:id`
+- `GET|POST /api/admin/perguntas`
+- `PUT|DELETE /api/admin/perguntas/:id`
+- `GET|POST /api/admin/perguntas/:perguntaId/alternativas`
+- `PUT|DELETE /api/admin/alternativas/:id`
 
 ### POST `/api/resultados`
 
@@ -159,9 +196,12 @@ Exporta somente o resultado individual do CPF informado em CSV.
 ## Seguranca
 
 - `helmet` configurado no Express.
-- `cors` configurado via `CORS_ORIGIN`.
 - Entradas principais sao validadas no backend.
 - O backend nao confia em dados calculados no frontend.
 - Renderizacao do frontend usa `textContent` para textos dinamicos.
 - `DATABASE_URL` e lida por variavel de ambiente.
 - `.env` esta no `.gitignore`; use `.env.example` como base.
+- Rotas administrativas exigem cookie assinado e verificam a origem de
+  requisicoes de escrita.
+- Tentativas de login administrativo possuem limite simples por endereco IP.
+- Erros internos retornam mensagem generica, sem stack trace para o cliente.

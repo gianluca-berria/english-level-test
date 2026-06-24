@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administração | English Level Test</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/admin.css">
+  </head>
+  <body class="admin-body">
+    <main class="admin-shell">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">Área protegida</p>
+          <h1>Administração</h1>
+          <p>Gerencie o conteúdo do teste sem expor as respostas corretas no fluxo público.</p>
+        </div>
+        <a class="admin-public-link" href="/">Abrir teste público</a>
+      </header>
+
+      <section id="login-view" class="panel admin-login" aria-labelledby="login-title">
+        <div class="panel-heading">
+          <h2 id="login-title">Login administrativo</h2>
+          <p class="panel-copy">A sessão é mantida por cookie seguro e temporário.</p>
+        </div>
+
+        <form id="login-form" class="admin-form" novalidate>
+          <div class="field-group">
+            <label for="admin-username">Usuário</label>
+            <input id="admin-username" name="username" autocomplete="username" required>
+          </div>
+          <div class="field-group">
+            <label for="admin-password">Senha</label>
+            <input
+              id="admin-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+          <button class="button primary-button" type="submit">Entrar</button>
+        </form>
+      </section>
+
+      <section id="dashboard-view" class="hidden">
+        <div class="admin-toolbar">
+          <div>
+            <strong id="session-user"></strong>
+            <span>Sessão administrativa ativa</span>
+          </div>
+          <button id="logout-button" class="button secondary-button" type="button">Sair</button>
+        </div>
+
+        <nav class="admin-tabs" aria-label="Seções administrativas">
+          <button class="admin-tab is-active" type="button" data-tab="questions">Perguntas</button>
+          <button class="admin-tab" type="button" data-tab="categories">Categorias</button>
+        </nav>
+
+        <section id="questions-section" class="admin-section">
+          <article class="panel admin-editor">
+            <div class="panel-heading">
+              <p class="eyebrow">Cadastro</p>
+              <h2 id="question-form-title">Nova pergunta</h2>
+            </div>
+
+            <form id="question-form" class="admin-form" novalidate>
+              <input id="question-id" type="hidden">
+              <div class="field-group">
+                <label for="question-text">Texto da pergunta</label>
+                <textarea id="question-text" rows="4" required></textarea>
+              </div>
+              <div class="admin-form-grid">
+                <div class="field-group">
+                  <label for="question-category">Categoria</label>
+                  <select id="question-category" required></select>
+                </div>
+                <label class="admin-checkbox">
+                  <input id="question-active" type="checkbox" checked>
+                  Pergunta ativa no teste público
+                </label>
+              </div>
+
+              <fieldset id="new-alternatives-fieldset" class="alternatives-editor">
+                <legend>Alternativas</legend>
+                <p>Cadastre ao menos uma alternativa e marque exatamente uma como correta.</p>
+                <div id="new-alternatives"></div>
+                <button id="add-alternative-row" class="button secondary-button" type="button">
+                  Adicionar alternativa
+                </button>
+              </fieldset>
+
+              <div class="admin-actions">
+                <button class="button primary-button" type="submit">Salvar pergunta</button>
+                <button id="cancel-question-edit" class="button secondary-button hidden" type="button">
+                  Cancelar edição
+                </button>
+              </div>
+            </form>
+          </article>
+
+          <div class="admin-list-heading">
+            <div>
+              <h2>Perguntas cadastradas</h2>
+              <p id="question-total" class="panel-copy"></p>
+            </div>
+          </div>
+          <div id="questions-list" class="admin-card-list"></div>
+        </section>
+
+        <section id="categories-section" class="admin-section hidden">
+          <article class="panel admin-editor">
+            <div class="panel-heading">
+              <p class="eyebrow">Cadastro</p>
+              <h2 id="category-form-title">Nova categoria</h2>
+            </div>
+            <form id="category-form" class="admin-form admin-inline-form" novalidate>
+              <input id="category-id" type="hidden">
+              <div class="field-group">
+                <label for="category-name">Nome</label>
+                <input id="category-name" required maxlength="200">
+              </div>
+              <div class="admin-actions">
+                <button class="button primary-button" type="submit">Salvar categoria</button>
+                <button id="cancel-category-edit" class="button secondary-button hidden" type="button">
+                  Cancelar edição
+                </button>
+              </div>
+            </form>
+          </article>
+          <div class="admin-list-heading">
+            <h2>Categorias cadastradas</h2>
+          </div>
+          <div id="categories-list" class="admin-card-list"></div>
+        </section>
+      </section>
+
+      <p id="admin-message" class="message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="/admin.js"></script>
+  </body>
+</html>
