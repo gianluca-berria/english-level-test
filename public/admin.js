@@ -10,7 +10,6 @@ const elements = {
   loginForm: document.querySelector('#login-form'),
   username: document.querySelector('#admin-username'),
   password: document.querySelector('#admin-password'),
-  sessionUser: document.querySelector('#session-user'),
   logoutButton: document.querySelector('#logout-button'),
   message: document.querySelector('#admin-message'),
   tabs: document.querySelectorAll('.admin-tab'),
@@ -21,6 +20,7 @@ const elements = {
   categoryName: document.querySelector('#category-name'),
   categoryFormTitle: document.querySelector('#category-form-title'),
   cancelCategoryEdit: document.querySelector('#cancel-category-edit'),
+  categoriesListHeading: document.querySelector('#categories-list-heading'),
   categoriesList: document.querySelector('#categories-list'),
   questionForm: document.querySelector('#question-form'),
   questionId: document.querySelector('#question-id'),
@@ -32,6 +32,7 @@ const elements = {
   newAlternatives: document.querySelector('#new-alternatives'),
   addAlternativeRow: document.querySelector('#add-alternative-row'),
   cancelQuestionEdit: document.querySelector('#cancel-question-edit'),
+  questionsListHeading: document.querySelector('#questions-list-heading'),
   questionsList: document.querySelector('#questions-list'),
   questionTotal: document.querySelector('#question-total')
 };
@@ -90,8 +91,7 @@ async function handleLogin(event) {
 async function handleLogout() {
   await requestJson('/api/admin/auth/logout', { method: 'POST' }, true);
   state.authenticated = false;
-  showLogin();
-  setMessage('Sessão encerrada.', 'success');
+  window.location.assign('/admin');
 }
 
 function handleTab(event) {
@@ -347,6 +347,7 @@ async function performAction(url, options, successMessage) {
 
 function renderCategories() {
   elements.categoriesList.replaceChildren();
+  elements.categoriesListHeading.classList.toggle('hidden', !state.categories.length);
 
   if (!state.categories.length) {
     elements.categoriesList.append(createEmptyState('Nenhuma categoria cadastrada.'));
@@ -391,6 +392,7 @@ function renderCategoryOptions() {
 
 function renderQuestions() {
   elements.questionsList.replaceChildren();
+  elements.questionsListHeading.classList.toggle('hidden', !state.questions.length);
   elements.questionTotal.textContent = `${state.questions.length} pergunta(s) cadastrada(s).`;
 
   if (!state.questions.length) {
@@ -535,12 +537,14 @@ function resetCategoryForm() {
 
 function showDashboard(username) {
   state.authenticated = true;
-  elements.sessionUser.textContent = username;
+  elements.logoutButton.setAttribute('aria-label', `Sair da sessão de ${username}`);
+  elements.logoutButton.classList.remove('hidden');
   elements.loginView.classList.add('hidden');
   elements.dashboardView.classList.remove('hidden');
 }
 
 function showLogin() {
+  elements.logoutButton.classList.add('hidden');
   elements.dashboardView.classList.add('hidden');
   elements.loginView.classList.remove('hidden');
 }

@@ -15,7 +15,13 @@
           <h1>Administração</h1>
           <p>Gerencie o conteúdo do teste sem expor as respostas corretas no fluxo público.</p>
         </div>
-        <a class="admin-public-link" href="/">Abrir teste público</a>
+        <button
+          id="logout-button"
+          class="button admin-logout-button hidden"
+          type="button"
+        >
+          Sair
+        </button>
       </header>
 
       <section id="login-view" class="panel admin-login" aria-labelledby="login-title">
@@ -44,14 +50,6 @@
       </section>
 
       <section id="dashboard-view" class="hidden">
-        <div class="admin-toolbar">
-          <div>
-            <strong id="session-user"></strong>
-            <span>Sessão administrativa ativa</span>
-          </div>
-          <button id="logout-button" class="button secondary-button" type="button">Sair</button>
-        </div>
-
         <nav class="admin-tabs" aria-label="Seções administrativas">
           <button class="admin-tab is-active" type="button" data-tab="questions">Perguntas</button>
           <button class="admin-tab" type="button" data-tab="categories">Categorias</button>
@@ -99,7 +97,7 @@
             </form>
           </article>
 
-          <div class="admin-list-heading">
+          <div id="questions-list-heading" class="admin-list-heading">
             <div>
               <h2>Perguntas cadastradas</h2>
               <p id="question-total" class="panel-copy"></p>
@@ -128,7 +126,7 @@
               </div>
             </form>
           </article>
-          <div class="admin-list-heading">
+          <div id="categories-list-heading" class="admin-list-heading">
             <h2>Categorias cadastradas</h2>
           </div>
           <div id="categories-list" class="admin-card-list"></div>
@@ -137,6 +135,35 @@
 
       <p id="admin-message" class="message" role="status" aria-live="polite"></p>
     </main>
+
+    <footer class="site-footer admin-footer">
+      <p>
+        Desenvolvido por
+        <a
+          href="https://github.com/gianluca-berria"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Gianluca Berria
+        </a>
+        /
+        <a
+          href="https://github.com/iGabrielSS"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Gabriel Santana
+        </a>
+        /
+        <a
+          href="https://github.com/DevManell"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Emmanuel Avelino
+        </a>
+      </p>
+    </footer>
 
     <script src="/admin.js"></script>
   </body>
